@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ECommerce.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<div class="container">
+    <div class="col-md-6">
+        <h2 class="text-primary">User List</h2>
+    </div>
+    <div class="col-md-6">
+        <p>
+            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary form-control"><i class="bi bi-person-add"></i>Add a User</a>
+        </p>
+    </div>
+    <table class="table table-striped table-bordered" id="myTable">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Surname
+                </th>
+                <th>
+                    eMail
+                </th>
+                <th>
+                    Role
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                      @Html.DisplayFor(modelItem=>item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Surname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Role)
+                    </td>
+                    <td>
+
+
+                        <a asp-action="Delete" asp-route-id="@item.Id.ToString()" class="btn btn-danger btn-sm"><i class="bi bi-trash2"></i>Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json"
+                }
+            });
+
+        });
+
+    </script>
+}
+
+
+

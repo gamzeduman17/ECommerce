@@ -1,0 +1,116 @@
+﻿@model ECommerce.Models.OrderDetailsVM
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post">
+    <input hidden asp-for="OrderHeader.Id" />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                
+            </div>
+            <dl class="row">
+                <dt class="col-sm-4">
+                    Name
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.OrderHeader.Name
+                </dd>
+                <dt class="col-sm-4">
+                    Surname
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.OrderHeader.Surname
+                </dd>
+                <dt class="col-sm-4">
+                    Phone Number
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.OrderHeader.PhoneNumber
+                </dd>
+                <dt class="col-sm-4">
+                    Address
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.OrderHeader.Address
+                </dd>
+                <dt class="col-sm-4">
+                    City
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.OrderHeader.City
+                </dd>
+                <dt class="col-sm-4">
+                    Region
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.OrderHeader.Region
+                </dd>
+                <dt class="col-sm-4">
+                    Postal Code
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.OrderHeader.PostalCode
+                </dd>
+                <dt class="col-sm-4">
+                    Order Date
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.OrderHeader.OrderDate.ToShortTimeString()
+                </dd>
+              
+
+            </dl>
+          
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-12">
+
+            <ul class="list-group mb-3">
+                @foreach (var item in Model.OrderDetails)
+                {
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">@item.Product.Title</h6>
+                            <small class="text-body-secondary">@item.Count</small>
+                        </div>
+                        <span class="text-body-secondary">@((item.Count * item.Product.Price).ToString("0.00"))₺</span>
+                    </li>
+                }
+
+
+                <li class="list-group-item d-flex justify-content-between bg-light">
+                    <div class="text-success">
+                        <h6 class="my-0">Total Price :</h6>
+
+                    </div>
+                    <span class="text-success">@(Model.OrderHeader.OrderTotal.ToString("0.00")) ₺</span>
+                </li>
+
+            </ul>
+            @if(User.IsInRole(Others.Role_Admin))
+            {
+                <br/>
+                @if(Model.OrderHeader.OrderStatus==Others.Status_Approved)
+                {
+                    <input type="submit" value="Deliver To Cargo" class="btn btn-primary form-control" formaction="/Admin/Order/DeliverToCargo" formmethod="post">
+                }
+                 @if(Model.OrderHeader.OrderStatus==Others.Status_OnHold)
+                {
+                    <input type="submit" value="Approve" class="btn btn-primary form-control" formaction="/Admin/Order/Approve" formmethod="post">
+                }
+              
+               
+            }
+            else
+            {
+                <label class="btn btn-primary form-control">@Model.OrderHeader.OrderStatus</label>
+            }
+        </div>
+
+    </div>
+</form>
+
